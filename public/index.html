@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Despatch Scale Labels</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <h1>Despatch Scale Labels</h1>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="new-request">New Request</button>
+    <button class="tab-btn" data-tab="reports">Reports</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ===================== NEW REQUEST TAB ===================== -->
+  <section id="new-request" class="tab-panel active">
+
+    <div id="resumePanel" class="card hidden">
+      <h2>Resume an Open Request</h2>
+      <div class="field-grid">
+        <label>Open requests
+          <select id="resumeSelect"></select>
+        </label>
+        <div class="inline-actions">
+          <button id="resumeBtn" class="secondary small">Resume</button>
+          <button id="startBlankBtn" class="secondary small">Start Blank Request</button>
+        </div>
+      </div>
+      <p id="resumeMsg" class="msg"></p>
+    </div>
+
+    <div class="grid-2">
+      <!-- Header form -->
+      <div class="card">
+        <h2>Packing Labels Request</h2>
+        <div class="field-grid">
+          <label>Labels Requested By <span class="req">*</span>
+            <input type="text" id="labelsRequestedBy" required />
+          </label>
+          <label>Labels Applied By
+            <input type="text" id="labelsAppliedBy" />
+          </label>
+          <label>Labels Printed By <span class="req">*</span>
+            <input type="text" id="labelsPrintedBy" required />
+          </label>
+          <label>Customer Name <span class="req">*</span>
+            <input type="text" id="customerName" required />
+          </label>
+          <label>Customer Reference No.
+            <input type="text" id="customerReferenceNo" />
+          </label>
+          <label>Airway Bill No.
+            <input type="text" id="airwayBillNo" />
+          </label>
+          <label>Request Date
+            <input type="date" id="requestDate" />
+          </label>
+        </div>
+        <div class="actions">
+          <button id="saveHeaderBtn" class="primary">Save Request</button>
+          <button id="completeBtn" class="secondary" disabled>Complete Request</button>
+          <span id="requestStatus" class="status-pill hidden"></span>
+        </div>
+        <p id="headerMsg" class="msg"></p>
+      </div>
+
+      <!-- Scale panel -->
+      <div class="card">
+        <h2>Scale Connection</h2>
+        <div class="field-grid">
+          <label>COM Port
+            <select id="comPortSelect"></select>
+          </label>
+          <div class="inline-actions">
+            <button id="refreshPortsBtn" class="secondary small">Refresh Ports</button>
+            <button id="connectScaleBtn" class="secondary small">Connect</button>
+          </div>
+        </div>
+        <div class="scale-readout">
+          <span id="scaleBadge" class="badge offline">OFFLINE</span>
+          <span id="scaleWeight" class="weight">0.0 <small>kg</small></span>
+        </div>
+        <label class="checkbox-row">
+          <input type="checkbox" id="manualEntryToggle" />
+          Manual weight entry (scale unavailable)
+        </label>
+        <input type="number" id="manualWeightInput" placeholder="Enter gross weight (kg)" step="0.1" class="hidden" />
+        <p id="scaleMsg" class="msg"></p>
+      </div>
+    </div>
+
+    <!-- Carton line entry -->
+    <div class="card">
+      <h2>Add Carton Line</h2>
+      <div class="field-grid line-entry">
+        <label>Carton No. <span class="req">*</span>
+          <input type="text" id="cartonNo" />
+        </label>
+        <label>Product Description <span class="req">*</span>
+          <input type="text" id="productDescription" />
+        </label>
+        <label>Crate Count
+          <input type="number" id="crateCount" value="1" min="0" step="1" />
+        </label>
+        <label>Crate Weight (kg)
+          <input type="text" id="crateWeightDisplay" readonly />
+        </label>
+        <label>Production Date
+          <input type="date" id="productionDate" />
+        </label>
+        <label>Expiry Date
+          <input type="date" id="expiryDate" />
+        </label>
+      </div>
+      <div class="capture-row">
+        <button id="captureWeightBtn" class="secondary">Capture Weight from Scale</button>
+        <span>Gross: <strong id="capturedGross">-</strong> kg</span>
+        <span>Net (preview): <strong id="previewNet">-</strong> kg</span>
+        <button id="addLineBtn" class="primary" disabled>Add Line</button>
+      </div>
+      <p id="lineMsg" class="msg"></p>
+    </div>
+
+    <!-- Lines table -->
+    <div class="card">
+      <h2>Carton Lines <span id="lineCount" class="muted"></span></h2>
+      <div class="table-wrap">
+        <table id="linesTable">
+          <thead>
+            <tr>
+              <th>#</th><th>Carton No.</th><th>Product Description</th><th>Gross (kg)</th>
+              <th>Crates</th><th>Net (kg)</th><th>Prod. Date</th><th>Expiry Date</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3">Total</td>
+              <td id="totalGross">0.0</td>
+              <td></td>
+              <td id="totalNet">0.0</td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REPORTS TAB ===================== -->
+  <section id="reports" class="tab-panel">
+    <div class="card">
+      <h2>Filter Requests</h2>
+      <div class="field-grid">
+        <label>From <input type="date" id="filterFrom" /></label>
+        <label>To <input type="date" id="filterTo" /></label>
+        <label>Customer <input type="text" id="filterCustomer" /></label>
+        <label>Requested By <input type="text" id="filterRequestedBy" /></label>
+        <label>Airway Bill No. <input type="text" id="filterAirwayBill" /></label>
+      </div>
+      <div class="actions">
+        <button id="applyFilterBtn" class="primary">Search</button>
+        <button id="clearFilterBtn" class="secondary">Clear</button>
+        <button id="exportAllBtn" class="secondary">Export filtered (Excel)</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table id="reportsTable">
+          <thead>
+            <tr>
+              <th>ID</th><th>Date</th><th>Status</th><th>Requested By</th><th>Customer</th>
+              <th>Airway Bill No.</th><th>Lines</th><th>Net Total (kg)</th><th>Export</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="reportsMsg" class="msg"></p>
+    </div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

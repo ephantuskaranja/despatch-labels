@@ -4,8 +4,12 @@
   "description": "Standalone despatch packing-labels request app with live scale streaming, MSSQL storage, and PDF/Excel reporting.",
   "main": "app.js",
   "scripts": {
+    "prestart": "npm run docs:pdf",
+    "predev": "npm run docs:pdf",
     "start": "node app.js",
-    "dev": "node app.js"
+    "dev": "node app.js",
+    "docs:pdf": "node scripts/generate-system-doc-pdf.js",
+    "docs:watch": "node scripts/generate-system-doc-pdf.js --watch"
   },
   "keywords": [],
   "author": "",

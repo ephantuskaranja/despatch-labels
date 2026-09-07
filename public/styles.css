@@ -7,8 +7,13 @@
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --danger: #dc2626;
+  --danger-hover: #b91c1c;
   --green: #16a34a;
+  --green-hover: #15803d;
   --amber: #d97706;
+  --amber-hover: #b45309;
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
   font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -124,6 +129,14 @@ button.primary { background: var(--primary); color: #fff; }
 button.primary:hover { background: var(--primary-hover); }
 button.secondary { background: #eef0f4; color: var(--text); }
 button.secondary:hover { background: #e2e5eb; }
+button.success { background: var(--green); color: #fff; }
+button.success:hover { background: var(--green-hover); }
+button.accent { background: var(--accent); color: #fff; }
+button.accent:hover { background: var(--accent-hover); }
+button.warn { background: var(--amber); color: #fff; }
+button.warn:hover { background: var(--amber-hover); }
+button.danger { background: var(--danger); color: #fff; }
+button.danger:hover { background: var(--danger-hover); }
 button.small { padding: 6px 10px; font-size: 12px; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
